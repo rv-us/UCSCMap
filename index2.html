@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps API with Map ID</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<!-- Google Maps API script with your API key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap"
+        async defer></script>
+
+<script src="index.js"></script>
+
+
+
+<!-- Map container -->
+<div id="map"></div>
+<div>
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="latitude" placeholder="Enter latitude">
+    
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="longitude" placeholder="Enter longitude">
+
+    <label for="text">Text:</label>
+    <input type="text" id="text" placeholder="enter event info">
+    <button onclick="add2array()">Add Marker</button>
+</div>
+
+<div>
+    <label for="location">Location:</label>
+    <input type="text" id="location" placeholder="enter event location">
+    <button onclick="add2arryloc()">Location Marker</button>
+</div>
+</body>
+</html>

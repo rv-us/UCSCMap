@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Calendar API Quickstart</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <p>Google Calendar API Quickstart</p>
+
+    <!-- Add buttons to initiate auth sequence and sign out -->
+    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <!-- Google Calendar API scripts -->
+    <script src="main.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
+    <!-- Google Maps API script with your API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap" async defer></script>
+    <script src="index.js"></script>
+
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Latitude, Longitude, and Text input -->
+    <div>
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" placeholder="Enter latitude">
+      
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" placeholder="Enter longitude">
+
+        <label for="text">Text:</label>
+        <input type="text" id="text" placeholder="Enter event info">
+        <button onclick="add2array()">Add Marker</button>
+        <button onclick="printEvents()">Print Events</button>
+    </div>
+
+    <!-- Location input -->
+    <div>
+        <label for="location">Location:</label>
+        <input type="text" id="location" placeholder="Enter event location">
+        <button onclick="add2arryloc()">Location Marker</button>
+    </div>
+
+</body>
+</html>
