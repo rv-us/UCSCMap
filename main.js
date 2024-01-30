@@ -19,7 +19,28 @@ let gapiInited = false;
 let gisInited = false;
 let events;
 let eventsToday;
-
+let datecount;
+let d = new Date();
+let year = d.getFullYear();
+let month = (d.getMonth() + 1).toString().padStart(2, '0');
+let day = d.getDate().toString().padStart(2, '0');
+let today;
+let counterdays = 0;
+let countermonths = 0;
+let daysInMonth = {
+    '01': 31, // January
+    '02': 28, // February (assuming not a leap year)
+    '03': 31, // March
+    '04': 30, // April
+    '05': 31, // May
+    '06': 30, // June
+    '07': 31, // July
+    '08': 31, // August
+    '09': 30, // September
+    '10': 31, // October
+    '11': 30, // November
+    '12': 31  // December
+};
 document.getElementById('authorize_button').style.visibility = 'hidden';
 document.getElementById('signout_button').style.visibility = 'hidden';
 
@@ -126,13 +147,11 @@ async function listUpcomingEvents() {
     events = response.result.items;
     console.log(events);
     // Filter events for today ONLY
-    const d = new Date();
-    const year = d.getFullYear();
-    const month = (d.getMonth() + 1).toString().padStart(2, '0');
-    const day = d.getDate().toString().padStart(2, '0');
-    const today = `${year}-${month}-${day}`;
-    console.log(today);
-
+    // const d = new Date();
+    // const year = d.getFullYear();
+    // const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    // const day = d.getDate().toString().padStart(2, '0');
+    var today = `${year}-${month}-${day}`;
     console.log(today);
     // for (const event of events) {
     //     if (event.start && event.start.dateTime) {
@@ -151,6 +170,73 @@ async function listUpcomingEvents() {
     // }
     // console.log(events)
 }
+function changedateforward() {
+    var intNumber = parseInt(day);
+    intNumber = intNumber + 1;
+    const monthKeys = Object.keys(daysInMonth);
+    for (const month1 in daysInMonth) {
+        // Check if the current month is equal to the targetMonth
+        console.log(month)
+        if (month1 === month) {
+            // Access the value for the current month
+            const days = daysInMonth[month];
+            console.log('The value of int days is'+ intNumber)
+            console.log('the value of days is'+days)
+            // Compare the value to the comparisonValue
+            if (days < intNumber) {
+                intNumber = intNumber-days;
+                console.log('should have changed?'+intNumber);
+                const currentIndex = monthKeys.indexOf(month);
+                const nextIndex = (currentIndex + 1) % 12;
+                month = monthKeys[nextIndex]; 
+            } 
+        }
+    }
+    console.log(intNumber)
+    day = intNumber.toString().padStart(2, '0');
+    today = `${year}-${month}-${day}`
+    console.log(today);
+    listUpcomingEvents()
+}
+function changedatebackward() {
+    var intNumber = parseInt(day);
+    intNumber = intNumber - 1;
+    const monthKeys = Object.keys(daysInMonth);
+
+    for (const month1 in daysInMonth) {
+        // Check if the current month is equal to the targetMonth
+        console.log(month)
+        if (month1 === month) {
+            // Access the value for the current month
+            const days = daysInMonth[month];
+            console.log('The value of int days is ' + intNumber)
+            console.log('The value of days is ' + days)
+            // Compare the value to the comparisonValue
+            if (days < intNumber) {
+                intNumber = intNumber - days;
+                console.log('Should have changed? ' + intNumber);
+                
+                const currentIndex = monthKeys.indexOf(month);
+                const previousIndex = (currentIndex - 1 + 12) % 12; // Adding 12 to handle negative modulo
+                month = monthKeys[previousIndex];
+            }
+        }
+    }
+
+    if (intNumber < 0) {
+        // If intNumber is negative, set day to the last day of the previous month
+        const previousMonth = monthKeys[(monthKeys.indexOf(month) - 1 + 12) % 12];
+        day = daysInMonth[previousMonth].toString().padStart(2, '0');
+    } else {
+        // Ensure intNumber is always two digits
+        day = intNumber.toString().padStart(2, '0');
+    }
+
+    today = `${year}-${month}-${day}`;
+    console.log(today);
+    listUpcomingEvents();
+}
+
 
 // Load the Google API and Identity Services scripts
 gapiLoaded();
