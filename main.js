@@ -171,6 +171,9 @@ async function listUpcomingEvents() {
     // console.log(events)
 }
 function changedateforward() {
+    while(markers.length > 0) {
+        markers.pop();
+    }
     var intNumber = parseInt(day);
     intNumber = intNumber + 1;
     const monthKeys = Object.keys(daysInMonth);
@@ -199,6 +202,9 @@ function changedateforward() {
     listUpcomingEvents()
 }
 function changedatebackward() {
+    while(markers.length > 0) {
+        markers.pop();
+    }
     var intNumber = parseInt(day);
     intNumber = intNumber - 1;
     const monthKeys = Object.keys(daysInMonth);
@@ -212,18 +218,19 @@ function changedatebackward() {
             console.log('The value of int days is ' + intNumber)
             console.log('The value of days is ' + days)
             // Compare the value to the comparisonValue
-            if (days < intNumber) {
+            if (intNumber < 1) {
                 intNumber = intNumber - days;
                 console.log('Should have changed? ' + intNumber);
                 
                 const currentIndex = monthKeys.indexOf(month);
                 const previousIndex = (currentIndex - 1 + 12) % 12; // Adding 12 to handle negative modulo
+                console.log(previousIndex)
                 month = monthKeys[previousIndex];
             }
         }
     }
 
-    if (intNumber < 0) {
+    if (intNumber < 1) {
         // If intNumber is negative, set day to the last day of the previous month
         const previousMonth = monthKeys[(monthKeys.indexOf(month) - 1 + 12) % 12];
         day = daysInMonth[previousMonth].toString().padStart(2, '0');
