@@ -3,37 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Maps API with Map ID</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Firebase Realtime Database Example</title>
 </head>
 <body>
 
-<!-- Google Maps API script with your API key -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap"
-        async defer></script>
+    <h1>Firebase Realtime Database Example</h1>
 
-<script src="index.js"></script>
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
 
+    <script>
+        // Your Firebase project configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro",
+            authDomain: "ucsc-event-planner-408319.firebaseapp.com",
+            databaseURL: "https://ucsc-event-planner-408319-default-rtdb.firebaseio.com",
+            projectId: "ucsc-event-planner-408319",
+            storageBucket: "ucsc-event-planner-408319.appspot.com",
+            messagingSenderId: "648866811",
+            appId: "1:648866811:web:5ed56e5e1de181b184f95e",
+            measurementId: "G-XSLP60WBV9"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
-<!-- Map container -->
-<div id="map"></div>
-<div>
-    <label for="latitude">Latitude:</label>
-    <input type="text" id="latitude" placeholder="Enter latitude">
-    
-    <label for="longitude">Longitude:</label>
-    <input type="text" id="longitude" placeholder="Enter longitude">
+        // Get a reference to the database service
+        var database = firebase.database();
+        var dataPath = 'ucsc-event-planner/rooms';
+        function addNewData() {
+            var newDataValue = document.getElementById("newDataInput").value;
+            var newID = document.getElementById("newIDInput").value;
 
-    <label for="text">Text:</label>
-    <input type="text" id="text" placeholder="enter event info">
-    <button onclick="add2array()">Add Marker</button>
-</div>
+            // Replace 'yourDataPath' with the path in your database where you want to store the data
+            var dataPath = 'ucsc-event-planner/rooms/' + newID;
 
-<div>
-    <label for="location">Location:</label>
-    <input type="text" id="location" placeholder="enter event location">
-    <button onclick="add2arryloc()">Location Marker</button>
-</div>
+            // Set the new item to the specified path with the desired ID
+            database.ref(dataPath).set({
+                value: newDataValue
+            });
+
+            console.log("New data added to the 'locations' key with ID:", newID, "Value:", newDataValue);
+            readEverything();
+        }
+        var dataDictionary = {};
+
+        // Function to read everything from the database and update the dictionary
+        function readEverything() {
+            // Replace 'yourDataPath' with the path in your database where you want to read the data
+
+            database.ref(dataPath).on('value', function(snapshot) {
+                // Clear the existing data in the dictionary
+                dataDictionary = {};
+                
+                // Iterate through each child in the snapshot and update the dictionary
+                snapshot.forEach(function(childSnapshot) {
+                    var key = childSnapshot.key;
+                    var value = childSnapshot.val();
+                    console.log(key);
+                    console.log(value);
+                    dataDictionary[key] = value;
+                });
+
+                console.log("Data Dictionary:", dataDictionary);
+            });
+        }
+    </script>
+     <label for="newIDInput">Enter ID:</label>
+     <input type="text" id="newIDInput" placeholder="Type ID...">
+     <label for="newDataInput">Enter New Data:</label>
+     <input type="text" id="newDataInput" placeholder="Type something...">
+     <button onclick="addNewData()">Add Data with ID</button>
 </body>
 </html>

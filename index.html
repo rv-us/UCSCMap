@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <!-- firebase scripts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="fire.js"></script>
     <p>Google Calendar API Quickstart</p>
 
     <!-- Add buttons to initiate auth sequence and sign out -->
@@ -14,6 +18,7 @@
     <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
+
     <!-- Google Calendar API scripts -->
     <script src="main.js"></script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
@@ -25,10 +30,11 @@
 
     <!-- Map container -->
     <div id="map"></div>
-        <div id="buttons-container" class="center-container button-container">
-            <button id="left_arrow" onclick="changedatebackward()">←</button>
-            <button id="right_arrow" onclick="changedateforward();">→</button>
-        </div>
+    <div id="buttons-container" class="center-container button-container">
+        <button id="left_arrow" onclick="changedatebackward()">←</button>
+        <button id="right_arrow" onclick="changedateforward();">→</button>
+    </div>
+
     <!-- Latitude, Longitude, and Text input -->
     <div>
         <label for="latitude">Latitude:</label>
@@ -49,6 +55,12 @@
         <input type="text" id="location" placeholder="Enter event location">
         <button onclick="add2arryloc()">Location Marker</button>
     </div>
-
-</body>
+    <div>
+    <label for="newIDInput">Enter ID:</label>
+     <input type="text" id="newIDInput" placeholder="Type ID...">
+     <label for="newDataInput">Enter New Data:</label>
+     <input type="text" id="newDataInput" placeholder="Type something...">
+     <button onclick="addNewData()">Add Data with ID</button>
+    </div>
+</body> 
 </html>
