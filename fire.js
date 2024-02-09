@@ -12,7 +12,8 @@ var firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
+var auth = firebase.auth();
+var firestore = firebase.firestore();
 // Get a reference to the database service
 var database = firebase.database();
 var dataPath = 'ucsc-event-planner/rooms';
@@ -53,3 +54,72 @@ function readEverything() {
         console.log("Data Dictionary:", dataDictionary);
     });
 }
+function loginUser() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then(function(userCredential) {
+            // User signed in successfully
+            var user = userCredential.user;
+            console.log("User signed in:", user.uid);
+        })
+        .catch(function(error) {
+            // Handle errors during sign-in
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.error("Login error:", errorCode, errorMessage);
+        });
+}
+function signUpUser() {
+    var email = document.getElementById("signupEmail").value;
+    var password = document.getElementById("signupPassword").value;
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(function(userCredential) {
+            // User signed up successfully
+            var user = userCredential.user;
+            console.log("User signed up:", user.uid);
+        })
+        .catch(function(error) {
+            // Handle errors during sign-up
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.error("Sign-up error:", errorCode, errorMessage);
+        });
+}
+function signInWithGoogle() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+
+    auth.signInWithPopup(provider)
+        .then(function (result) {
+            // This gives you a Google Access Token.
+            var token = result.credential.accessToken;
+            // The signed-in user info.
+            var user = result.user;
+            console.log("User signed in with Google:", user);
+            handleAuthClick();
+        })
+        .catch(function (error) {
+            // Handle errors during Google sign-in
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.error("Google Sign-in error:", errorCode, errorMessage);
+        });
+        tokenClient.callback = async (resp) => {
+    if (resp.error !== undefined) {
+        throw (resp);
+    }
+    listUpcomingEvents();
+    };
+}
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in, and you can access the UID
+      var uid = user.uid;
+      console.log("User UID:", uid);
+    } else {
+      // User is signed out
+      console.log("User is signed out");
+    }
+  });
