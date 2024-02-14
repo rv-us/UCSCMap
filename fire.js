@@ -16,13 +16,13 @@ var auth = firebase.auth();
 var firestore = firebase.firestore();
 // Get a reference to the database service
 var database = firebase.database();
-var dataPath = 'ucsc-event-planner/rooms';
+var dataPath = 'ucsc-event-planner';
 function addNewData() {
     var newDataValue = document.getElementById("newDataInput").value;
     var newID = document.getElementById("newIDInput").value;
 
     // Replace 'yourDataPath' with the path in your database where you want to store the data
-    var dataPath = 'ucsc-event-planner/rooms/' + newID;
+    var dataPath = 'ucsc-event-planner' + newID;
 
     // Set the new item to the specified path with the desired ID
     database.ref(dataPath).set({
@@ -32,7 +32,7 @@ function addNewData() {
     console.log("New data added to the 'locations' key with ID:", newID, "Value:", newDataValue);
     readEverything();
 }
-var dataDictionary = {};
+let dataDictionary = {};
 
 // Function to read everything from the database and update the dictionary
 function readEverything() {
@@ -99,6 +99,7 @@ function signInWithGoogle() {
             var user = result.user;
             console.log("User signed in with Google:", user);
             handleAuthClick();
+            readEverything();
         })
         .catch(function (error) {
             // Handle errors during Google sign-in
@@ -111,6 +112,7 @@ function signInWithGoogle() {
         throw (resp);
     }
     listUpcomingEvents();
+    console.log("test");
     };
 }
 firebase.auth().onAuthStateChanged(function(user) {

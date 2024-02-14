@@ -3,7 +3,7 @@
 /* Set the overall background to black */
 body {
     background-color: black;
-    color: white; /* Set text color to white */
+    color: rgb(227, 3, 3); /* Set text color to white */
     font-family: 'Open Sans', sans-serif; /* Use Open Sans font for text */
 }
 
