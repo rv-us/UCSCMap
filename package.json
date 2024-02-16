@@ -1,5 +1,21 @@
 {
   "dependencies": {
-    "http-server": "^14.1.1"
-  }
+    "autoprefixer": "^10.4.17",
+    "firebase": "^10.8.0",
+    "postcss-cli": "^11.0.0",
+    "watch": "^1.0.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  },
+  "name": "ucscmap-gitwithoutfire",
+  "version": "1.0.0",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "build": "postcss css/styles.css -o build/styles.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
