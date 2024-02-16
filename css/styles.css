@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: black;
+    color: rgb(227, 3, 3); /* Set text color to white */
+    font-family: 'Open Sans', sans-serif; /* Use Open Sans font for text */
+}
+
+/* Set the map container size and center it on the screen */
+#map {
+    height: 500px;
+    width: 50%; /* Adjust the width as needed */
+    margin: 50px auto; /* Center the map horizontally */
+    border: 4px solid yellow;
+}
+
+/* Create a center container class for the buttons */
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style for the buttons */
+.button-container {
+    margin-top: 0px; /* Adjust the margin as needed to prevent overlap with the map */
+}
+
+#left_arrow,
+#right_arrow {
+    font-size: 24px; 
+}
