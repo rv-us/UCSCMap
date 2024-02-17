@@ -4,68 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Calendar API Quickstart</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
-    <!-- firebase scripts-->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="fire.js"></script>
-    <p>Google Calendar API Quickstart</p>
+<body class="bg-gradient-to-br from-blue-500 to-black-300 min-h-screen flex">
 
-    <!-- Add buttons to initiate auth sequence and sign out -->
-    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    <!-- Map Container -->
+    <div id="map" class="flex-1 h-screen"></div>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    <!-- Main Content -->
+    <div class="w-1/3 p-4 bg-white">
 
-    <!-- Google Calendar API scripts -->
-    <script src="main.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+        <!-- Header -->
+        <header class="text-center py-4 bg-blue-500 text-white">
+            <h1 class="text-2xl font-bold">UCSC Event Planner</h1>
+        </header>
 
-    <!-- Google Maps API script with your API key -->
+        <!-- Firebase Scripts -->
+        <div class="hidden">
+            <!-- firebase scripts-->
+            <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+            <script src="fire.js"></script>
+        </div>
+
+        <!-- Content -->
+        <div class="container mx-auto mt-4 p-4">
+            <p class="text-lg">Google Calendar API Quickstart</p>
+
+            <!-- Authorization Buttons -->
+            <div class="mt-4 space-x-4">
+                <button id="authorize_button" onclick="handleAuthClick()" class="bg-blue-500 text-white px-4 py-2 rounded">Authorize</button>
+                <button id="signout_button" onclick="handleSignoutClick()" class="bg-red-500 text-white px-4 py-2 rounded">Sign Out</button>
+            </div>
+
+            <pre id="content" class="mt-4 whitespace-pre-wrap bg-gradient-to-br from-blue-500 to-black-300"></pre>
+
+            <!-- Google Calendar API Scripts -->
+            <script src="main.js"></script>
+            <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+            <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
+            <!-- Date Navigation Buttons -->
+            <div id="buttons-container" class="flex justify-center mt-4">
+                <button id="left_arrow" onclick="changedatebackward()" class="bg-blue-500 text-white px-4 py-2 rounded">←</button>
+                <button id="right_arrow" onclick="changedateforward()" class="bg-blue-500 text-white px-4 py-2 rounded ml-4">→</button>
+            </div>
+
+            <!-- ID and Data Input -->
+            <div class="mt-4 space-y-4">
+                <div class="flex space-x-4">
+                    <label for="newIDInput" class="flex items-center">Enter ID:</label>
+                    <input type="text" id="newIDInput" placeholder="Type ID..." class="border rounded px-2 py-1">
+                </div>
+                <div class="flex space-x-4">
+                    <label for="newDataInput" class="flex items-center">Enter New Data:</label>
+                    <input type="text" id="newDataInput" placeholder="Type something..." class="border rounded px-2 py-1">
+                </div>
+                <button onclick="addNewData()" class="bg-green-500 text-white px-4 py-2 rounded">Add Data with ID</button>
+            </div>
+
+            <!-- Print Events Button -->
+            <div class="mt-4">
+                <button onclick="printEvents()" class="bg-blue-500 text-white px-4 py-2 rounded">Print Events</button>
+            </div>
+
+            <!-- Sign Up with Google Button -->
+            <div class="mt-4">
+                <button type="button" onclick="signInWithGoogle()" class="bg-red-500 text-white px-4 py-2 rounded">Sign Up with Google</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API Script -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap" async></script>
     <script src="index.js"></script>
 
-    <!-- Map container -->
-    <div id="map"></div>
-    <div id="buttons-container" class="center-container button-container">
-        <button id="left_arrow" onclick="changedatebackward()">←</button>
-        <button id="right_arrow" onclick="changedateforward();">→</button>
-    </div>
-
-    <!-- Latitude, Longitude, and Text input -->
-    <div>
-        <!-- <label for="latitude">Latitude:</label>
-        <input type="text" id="latitude" placeholder="Enter latitude">
-      
-        <label for="longitude">Longitude:</label>
-        <input type="text" id="longitude" placeholder="Enter longitude">
-
-        <label for="text">Text:</label>
-        <input type="text" id="text" placeholder="Enter event info">
-        <button onclick="add2array()">Add Marker</button> -->
-        <button onclick="printEvents()">Print Events</button>
-    </div>
-
-    <!-- Location input -->
-    <!-- <div>
-        <label for="location">Location:</label>
-        <input type="text" id="location" placeholder="Enter event location">
-        <button onclick="add2arryloc()">Location Marker</button>
-    </div> -->
-    <div>
-    <label for="newIDInput">Enter ID:</label>
-     <input type="text" id="newIDInput" placeholder="Type ID...">
-     <label for="newDataInput">Enter New Data:</label>
-     <input type="text" id="newDataInput" placeholder="Type something...">
-     <button onclick="addNewData()">Add Data with ID</button>
-    </div>
-    <div>
-        <button type="button" onclick="signInWithGoogle()">Sign Up with Google</button>
-    </div>
-</body> 
+</body>
 </html>

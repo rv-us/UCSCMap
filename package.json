@@ -12,7 +12,8 @@
   "version": "1.0.0",
   "main": "tailwind.config.js",
   "scripts": {
-    "build": "postcss css/styles.css -o build/styles.css"
+    "build": "postcss css/styles.css -o build/styles.css",
+    "watch":"watch `npm run build` ./dist"
   },
   "keywords": [],
   "author": "",
