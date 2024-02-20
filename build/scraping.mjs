@@ -47,7 +47,7 @@ async function scrapePage(url, diningHallName) {
                 currentCategory = text;
             } else if (currentCategory) {
                 // If it's a recipe and there's a current category, add it to the list
-                recipesData.push({ category: currentCategory, recipe: text });
+                recipesData.push({ category: currentCategory.trim(), recipe: text });
             }
         }
 
@@ -83,4 +83,5 @@ async function scrapePage(url, diningHallName) {
     const dbRef = ref(database, 'scrapedMenus');
     await set(dbRef, scrapedMenus);
     // Log the global object containing all scraped menus
+    await browser.close();
 })();

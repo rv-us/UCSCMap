@@ -17,6 +17,7 @@ var firestore = firebase.firestore();
 // Get a reference to the database service
 var database = firebase.database();
 var dataPath = 'ucsc-event-planner';
+var menuPath = 'scrapedMenus'
 function addNewData() {
     var newDataValue = document.getElementById("newDataInput").value;
     var newID = document.getElementById("newIDInput").value;
@@ -33,7 +34,26 @@ function addNewData() {
     readEverything();
 }
 let dataDictionary = {};
+let menuDictionary = {};
+function readMenu() {
+    // Replace 'yourDataPath' with the path in your database where you want to read the data
 
+    database.ref(menuPath).on('value', function(snapshot) {
+        // Clear the existing data in the dictionary
+        menuDictionary = {};
+        
+        // Iterate through each child in the snapshot and update the dictionary
+        snapshot.forEach(function(childSnapshot) {
+            var key = childSnapshot.key;
+            var value = childSnapshot.val();
+            console.log(key);
+            console.log(value);
+            menuDictionary[key] = value;
+        });
+
+        console.log("Menu Dictionary:", menuDictionary);
+    });
+}
 // Function to read everything from the database and update the dictionary
 function readEverything() {
     // Replace 'yourDataPath' with the path in your database where you want to read the data
@@ -125,3 +145,4 @@ firebase.auth().onAuthStateChanged(function(user) {
       console.log("User is signed out");
     }
   });
+  readMenu();

@@ -214,7 +214,10 @@ function initMap() {
         zoom: 14 // Set the initial zoom level
 
     });
-    // dininghallmarkers(map)
+    setTimeout(() => {
+        // Call the dininghallmarkers function after the timeout
+        dininghallmarkers(map);
+    }, 3000);
     // const marker = new google.maps.Marker({
     //     position: {lat: 36.99137080167048, lng: -122.05817034570666},
     //     map: map,
@@ -241,37 +244,103 @@ function formatText(menu) {
         Latenight: [],
     };
 
-    scrapedMenu[menu].forEach(item => {
+    menuDictionary[menu].forEach(item => {
         const { category, recipe } = item;
 
-        switch (category) {
-            case 'Breakfast':
+        // Convert category to lowercase for case-insensitive comparison
+        const lowerCaseCategory = category.toLowerCase();
+
+        switch (lowerCaseCategory) {
+            case 'breakfast':
                 formattedText.Breakfast.push(recipe);
                 break;
-            case 'Lunch':
+            case 'lunch':
                 formattedText.Lunch.push(recipe);
                 break;
-            case 'Dinner':
+            case 'dinner':
                 formattedText.Dinner.push(recipe);
                 break;
-            case 'Latenight':
+            case 'late night':
+            case 'latenight':
                 formattedText.Latenight.push(recipe);
                 break;
+            default:
+                console.log(`Unknown category: ${category}`);
         }
     });
+    const cleanedMenuName = menu.replace(/[0-9%]/g, '');
+    // Concatenate recipes into a single string for each category
+    const formattedString = `<div style="text-align: center; font-weight: bold;">${cleanedMenuName}</div>` +
+        Object.keys(formattedText)
+            .map(category => `<b>${category}:</b> ${formattedText[category].join(', ')}<br><br>`)
+            .join('');
 
-    return formattedText;
+    console.log(formattedString);
+    return formattedString;
 }
+
+
+
+
 function dininghallmarkers(map){
     var marker = new google.maps.Marker({
         position: { lat: 37.00076168547764, lng: -122.05783384362127 },
         map: map,
+        icon: { url:'diningicon.png', scaledSize: new google.maps.Size(30,30),},
+        animation: google.maps.Animation.DROP // or google.maps.Animation.DROP or google.maps.Animation.NONE
     });
 
     var infoWindow = new google.maps.InfoWindow({
-        content: formatText('College Nine/John R. Lewis Dining Hall'),
+        content: formatText('College%20Nine%2FJohn%20R_%20Lewis%20Dining%20Hall'),
     });
 
     attachInfoWindow(marker, infoWindow, map);
+    var marker = new google.maps.Marker({
+        position: { lat: 37.00013268003267, lng: -122.0543842647317},
+        map: map,
+        icon: { url:'diningicon.png', scaledSize: new google.maps.Size(30,30),},
+        animation: google.maps.Animation.DROP // or google.maps.Animation.DROP or google.maps.Animation.NONE
+    });
 
+    var infoWindow = new google.maps.InfoWindow({
+        content: formatText('Crown%2FMerrill%20Dining%20Hall'),
+    });
+
+    attachInfoWindow(marker, infoWindow, map);
+    var marker = new google.maps.Marker({
+        position: { lat: 36.99679491436874, lng: -122.0530349264212},
+        map: map,
+        icon: { url:'diningicon.png', scaledSize: new google.maps.Size(30,30),},
+        animation: google.maps.Animation.DROP // or google.maps.Animation.DROP or google.maps.Animation.NONE
+    });
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: formatText('Cowell%2FStevenson%20Dining%20Hall'),
+    });
+
+    attachInfoWindow(marker, infoWindow, map);
+    var marker = new google.maps.Marker({
+        position: { lat: 36.994256650423914, lng: -122.06594871077964},
+        map: map,
+        icon: { url:'diningicon.png', scaledSize: new google.maps.Size(30,30),},
+        animation: google.maps.Animation.DROP // or google.maps.Animation.DROP or google.maps.Animation.NONE
+    });
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: formatText('Porter%2FKresge%20Dining%20Hall'),
+    });
+
+    attachInfoWindow(marker, infoWindow, map);
+    var marker = new google.maps.Marker({
+        position: { lat: 36.991613794328394, lng: -122.06540547180322},
+        map: map,
+        icon: { url:'diningicon.png', scaledSize: new google.maps.Size(30,30),},
+        animation: google.maps.Animation.DROP // or google.maps.Animation.DROP or google.maps.Animation.NONE
+    });
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: formatText('Rachel%20Carson%2FOakes%20Dining%20Hall'),
+    });
+
+    attachInfoWindow(marker, infoWindow, map);
 }
