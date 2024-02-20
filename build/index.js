@@ -1,4 +1,3 @@
-alert('script works')
 // import { eventsToday } from './main.js';
 var markers = [];
 var counter = 0;
@@ -215,6 +214,7 @@ function initMap() {
         zoom: 14 // Set the initial zoom level
 
     });
+    // dininghallmarkers(map)
     // const marker = new google.maps.Marker({
     //     position: {lat: 36.99137080167048, lng: -122.05817034570666},
     //     map: map,
@@ -232,3 +232,46 @@ function initMap() {
 //36.99137080167048, -122.05817034570666
 //36.995361645213855, -122.05914907855643
 //36.99563233442705, -122.0592310991228
+
+function formatText(menu) {
+    const formattedText = {
+        Breakfast: [],
+        Lunch: [],
+        Dinner: [],
+        Latenight: [],
+    };
+
+    scrapedMenu[menu].forEach(item => {
+        const { category, recipe } = item;
+
+        switch (category) {
+            case 'Breakfast':
+                formattedText.Breakfast.push(recipe);
+                break;
+            case 'Lunch':
+                formattedText.Lunch.push(recipe);
+                break;
+            case 'Dinner':
+                formattedText.Dinner.push(recipe);
+                break;
+            case 'Latenight':
+                formattedText.Latenight.push(recipe);
+                break;
+        }
+    });
+
+    return formattedText;
+}
+function dininghallmarkers(map){
+    var marker = new google.maps.Marker({
+        position: { lat: 37.00076168547764, lng: -122.05783384362127 },
+        map: map,
+    });
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: formatText('College Nine/John R. Lewis Dining Hall'),
+    });
+
+    attachInfoWindow(marker, infoWindow, map);
+
+}
