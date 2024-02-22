@@ -163,8 +163,17 @@ async function listUpcomingEvents() {
     eventsToday = events.filter(events => events.start.dateTime.substr(0, 10) == today);
     console.log(eventsToday);
     // Print events
-    const output = eventsToday.reduce((str, eventsToday) => `${str}${eventsToday.summary} (${eventsToday.start.dateTime || eventsToday.start.date}) ${eventsToday.location}\n`,'Events:\n');
+    const output = eventsToday.reduce((str, event) => {
+        const startTime = event.start.dateTime ? new Date(event.start.dateTime) : null;
+        const formattedTime = startTime ? startTime.toLocaleTimeString() : 'All day';
+    
+        return `${str}${event.summary} (${formattedTime}) ${event.location}\n`;
+    }, 'Events:\n');
+    
     document.getElementById('content').innerText = output;
+    document.getElementById('currentDate').textContent = today;
+    
+    printEvents();
     // for (const event of eventsToday) {
     //     console.log(`Event: ${event.summary}, Date: ${event.start.dateTime || event.start.date}, Location: ${event.location}`);
     // }
@@ -199,7 +208,7 @@ function changedateforward() {
     day = intNumber.toString().padStart(2, '0');
     today = `${year}-${month}-${day}`
     console.log(today);
-    listUpcomingEvents()
+    listUpcomingEvents();
 }
 function changedatebackward() {
     while(markers.length > 0) {

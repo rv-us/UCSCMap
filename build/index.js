@@ -6,7 +6,6 @@ var LocationData = {
     "Porter": {latitude: 36.994427880972744, longitude: -122.06544000979235},
 };
 function printEvents() {
-    alert('I was pressed')
     var text;
     var map = new google.maps.Map(document.getElementById('map'), {
         mapId: 'bcfa2e27e0216909',
@@ -19,7 +18,14 @@ function printEvents() {
         }
         else{
             counter++;
-            text = `Event: ${event.summary}, Date: ${event.start.dateTime || event.start.date}`;
+            const output = eventsToday.reduce((str, event) => {
+                const startTime = event.start.dateTime ? new Date(event.start.dateTime) : null;
+                const formattedTime = startTime ? startTime.toLocaleTimeString() : 'All day';
+            
+                return `${str}${event.summary} (${formattedTime}) ${event.location}\n`;
+            }, 'Events:\n');
+            
+            text = output;
             geocodeAddress(event.location,text);
         }
         console.log(`Event: ${event.summary}, Date: ${event.start.dateTime || event.start.date}, Location: ${event.location}`);
@@ -193,6 +199,7 @@ function displayMarkersOnMap(map) {
 
         attachInfoWindow(marker, infoWindow, map);
     }
+    dininghallmarkers(map);
 }
 
 
@@ -217,7 +224,7 @@ function initMap() {
     setTimeout(() => {
         // Call the dininghallmarkers function after the timeout
         dininghallmarkers(map);
-    }, 3000);
+    }, 1000);
     // const marker = new google.maps.Marker({
     //     position: {lat: 36.99137080167048, lng: -122.05817034570666},
     //     map: map,
@@ -264,8 +271,8 @@ function formatText(menu) {
             case 'latenight':
                 formattedText.Latenight.push(recipe);
                 break;
-            default:
-                console.log(`Unknown category: ${category}`);
+            // default:
+            //     console.log(`Unknown category: ${category}`);
         }
     });
     const cleanedMenuName = menu.replace(/[0-9%]/g, '');
@@ -274,8 +281,6 @@ function formatText(menu) {
         Object.keys(formattedText)
             .map(category => `<b>${category}:</b> ${formattedText[category].join(', ')}<br><br>`)
             .join('');
-
-    console.log(formattedString);
     return formattedString;
 }
 
