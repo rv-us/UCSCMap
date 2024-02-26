@@ -3,37 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Maps API with Map ID</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>User Login</title>
+</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Google Maps API script with your API key -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap"
-        async defer></script>
+    <h1>User Login</h1>
 
-<script src="index.js"></script>
+    <!-- Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="main.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 
+    <script>
+        // Your Firebase project configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro",
+            authDomain: "ucsc-event-planner-408319.firebaseapp.com",
+            databaseURL: "https://ucsc-event-planner-408319-default-rtdb.firebaseio.com",
+            projectId: "ucsc-event-planner-408319",
+            storageBucket: "ucsc-event-planner-408319.appspot.com",
+            messagingSenderId: "648866811",
+            appId: "1:648866811:web:5ed56e5e1de181b184f95e",
+            measurementId: "G-XSLP60WBV9"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Get references to authentication and firestore services
+        var auth = firebase.auth();
+        var firestore = firebase.firestore();
 
-<!-- Map container -->
-<div id="map"></div>
-<div>
-    <label for="latitude">Latitude:</label>
-    <input type="text" id="latitude" placeholder="Enter latitude">
+        // Function to handle user login
+        function loginUser() {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(userCredential) {
+                    // User signed in successfully
+                    var user = userCredential.user;
+                    console.log("User signed in:", user.uid);
+                })
+                .catch(function(error) {
+                    // Handle errors during sign-in
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error("Login error:", errorCode, errorMessage);
+                });
+        }
+        function signUpUser() {
+            var email = document.getElementById("signupEmail").value;
+            var password = document.getElementById("signupPassword").value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(function(userCredential) {
+                    // User signed up successfully
+                    var user = userCredential.user;
+                    console.log("User signed up:", user.uid);
+                })
+                .catch(function(error) {
+                    // Handle errors during sign-up
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.error("Sign-up error:", errorCode, errorMessage);
+                });
+        }
+        function signInWithGoogle() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        auth.signInWithPopup(provider)
+            .then(function (result) {
+                // This gives you a Google Access Token.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                console.log("User signed in with Google:", user);
+                handleAuthClick();
+            })
+            .catch(function (error) {
+                // Handle errors during Google sign-in
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.error("Google Sign-in error:", errorCode, errorMessage);
+            });
+            tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw (resp);
+        }
+        listUpcomingEvents();
+        };
+
+        if (gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        tokenClient.requestAccessToken({prompt: ''});
+        }
+    }
+    </script>
+
+    <!-- HTML elements for user login -->
+    <form>
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password">
+
+        <button type="button" onclick="loginUser()">Login</button>
+    </form>
+
+    <h2>Sign Up</h2>
+    <form>
+        <label for="signupEmail">Email:</label>
+        <input type="email" id="signupEmail" placeholder="Enter your email">
     
-    <label for="longitude">Longitude:</label>
-    <input type="text" id="longitude" placeholder="Enter longitude">
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" placeholder="Enter your password">
+    
+        <button type="button" onclick="signUpUser()">Sign Up</button>
+    
+        <hr> <!-- Add a horizontal line for separation -->
+    
+        <!-- Add Google Sign-In button -->
+        <button type="button" onclick="signInWithGoogle()">Sign Up with Google</button>
+    </form>
 
-    <label for="text">Text:</label>
-    <input type="text" id="text" placeholder="enter event info">
-    <button onclick="add2array()">Add Marker</button>
-</div>
-
-<div>
-    <label for="location">Location:</label>
-    <input type="text" id="location" placeholder="enter event location">
-    <button onclick="add2arryloc()">Location Marker</button>
-</div>
+    <a href="index.html">About this site</a>
 </body>
 </html>

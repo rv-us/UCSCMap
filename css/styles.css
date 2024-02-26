@@ -1,6 +1,7 @@
-/* style.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Set the overall background to black */
 body {
     background-color: black;
     color: rgb(227, 3, 3); /* Set text color to white */

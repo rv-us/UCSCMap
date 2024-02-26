@@ -7,6 +7,12 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <!-- firebase scripts-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="fire.js"></script>
     <p>Google Calendar API Quickstart</p>
 
     <!-- Add buttons to initiate auth sequence and sign out -->
@@ -21,15 +27,19 @@
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 
     <!-- Google Maps API script with your API key -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDiEfJb9DOKfqXfy_Y9xZhQmZ0TXbNO1ro&callback=initMap" async></script>
     <script src="index.js"></script>
 
     <!-- Map container -->
     <div id="map"></div>
+    <div id="buttons-container" class="center-container button-container">
+        <button id="left_arrow" onclick="changedatebackward()">←</button>
+        <button id="right_arrow" onclick="changedateforward();">→</button>
+    </div>
 
     <!-- Latitude, Longitude, and Text input -->
     <div>
-        <label for="latitude">Latitude:</label>
+        <!-- <label for="latitude">Latitude:</label>
         <input type="text" id="latitude" placeholder="Enter latitude">
       
         <label for="longitude">Longitude:</label>
@@ -37,16 +47,25 @@
 
         <label for="text">Text:</label>
         <input type="text" id="text" placeholder="Enter event info">
-        <button onclick="add2array()">Add Marker</button>
+        <button onclick="add2array()">Add Marker</button> -->
         <button onclick="printEvents()">Print Events</button>
     </div>
 
     <!-- Location input -->
-    <div>
+    <!-- <div>
         <label for="location">Location:</label>
         <input type="text" id="location" placeholder="Enter event location">
         <button onclick="add2arryloc()">Location Marker</button>
+    </div> -->
+    <div>
+    <label for="newIDInput">Enter ID:</label>
+     <input type="text" id="newIDInput" placeholder="Type ID...">
+     <label for="newDataInput">Enter New Data:</label>
+     <input type="text" id="newDataInput" placeholder="Type something...">
+     <button onclick="addNewData()">Add Data with ID</button>
     </div>
-
-</body>
+    <div>
+        <button type="button" onclick="signInWithGoogle()">Sign Up with Google</button>
+    </div>
+</body> 
 </html>
