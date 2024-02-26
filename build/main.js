@@ -166,7 +166,9 @@ async function listUpcomingEvents() {
     const output = eventsToday.reduce((str, event) => {
         const startTime = event.start.dateTime ? new Date(event.start.dateTime) : null;
         const formattedTime = startTime ? startTime.toLocaleTimeString() : 'All day';
-    
+        if (event.location === undefined){
+            event.location = 'online';
+        }
         return `${str}${event.summary} (${formattedTime}) ${event.location}\n`;
     }, 'Events:\n');
     
@@ -208,6 +210,7 @@ function changedateforward() {
     day = intNumber.toString().padStart(2, '0');
     today = `${year}-${month}-${day}`
     console.log(today);
+
     listUpcomingEvents();
 }
 function changedatebackward() {

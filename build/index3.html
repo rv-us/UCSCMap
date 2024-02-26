@@ -56,12 +56,20 @@
             <!-- ID and Data Input -->
             <div class="mt-4 space-y-4">
                 <div class="flex space-x-4">
-                    <label for="newIDInput" class="flex items-center">Enter ID:</label>
+                    <label for="newIDInput" class="flex items-center">Building:</label>
                     <input type="text" id="newIDInput" placeholder="Type ID..." class="border rounded px-2 py-1">
                 </div>
                 <div class="flex space-x-4">
-                    <label for="newDataInput" class="flex items-center">Enter New Data:</label>
-                    <input type="text" id="newDataInput" placeholder="Type something..." class="border rounded px-2 py-1">
+                    <label for="room" class="flex items-center">Room:</label>
+                    <input type="text" id="room" placeholder="Type something..." class="border rounded px-2 py-1">
+                </div>
+                <div class="flex space-x-4">
+                    <label for="latitude" class="flex items-center">Latitude:</label>
+                    <input type="text" id="latitude" placeholder="Type something..." class="border rounded px-2 py-1">
+                </div>
+                <div class="flex space-x-4">
+                    <label for="longitude" class="flex items-center">Longitude:</label>
+                    <input type="text" id="longitude" placeholder="Type something..." class="border rounded px-2 py-1">
                 </div>
                 <button onclick="addNewData()" class="bg-green-500 text-white px-4 py-2 rounded">Add Data with ID</button>
             </div>

@@ -17,22 +17,28 @@ var firestore = firebase.firestore();
 // Get a reference to the database service
 var database = firebase.database();
 var dataPath = 'ucsc-event-planner';
-var menuPath = 'scrapedMenus'
+var menuPath = 'scrapedMenus';
+
 function addNewData() {
-    var newDataValue = document.getElementById("newDataInput").value;
+    var room = document.getElementById("room").value;
     var newID = document.getElementById("newIDInput").value;
+    var lat = document.getElementById("latitude").value;
+    var long = document.getElementById("longitude").value;
 
-    // Replace 'yourDataPath' with the path in your database where you want to store the data
-    var dataPath = 'ucsc-event-planner' + newID;
+    // Construct the full path with the chosen key
+    var fullPath = dataPath + "/" + newID;
+    console.log("Data Path:", fullPath);
 
-    // Set the new item to the specified path with the desired ID
-    database.ref(dataPath).set({
-        value: newDataValue
+    // Set the specific child with the new data using the key "room"
+    database.ref(fullPath).child(room).set({
+        lat: lat,
+        long: long
     });
 
-    console.log("New data added to the 'locations' key with ID:", newID, "Value:", newDataValue);
+    console.log("Data updated at the path:", fullPath + "/" + room, "with Value:");
     readEverything();
 }
+
 let dataDictionary = {};
 let menuDictionary = {};
 function readMenu() {

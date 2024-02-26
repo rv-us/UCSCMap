@@ -12,20 +12,19 @@ function printEvents() {
         center: { lat: 36.99137080167048, lng: -122.05817034570666 }, // Set the initial map center
         zoom: 14 // Set the initial zoom level
     });
+    while(markers.length > 0) {
+        markers.pop();
+    }
     for (const event of eventsToday) {
         if(event.location === undefined){
             console.log('online');
         }
         else{
             counter++;
-            const output = eventsToday.reduce((str, event) => {
-                const startTime = event.start.dateTime ? new Date(event.start.dateTime) : null;
-                const formattedTime = startTime ? startTime.toLocaleTimeString() : 'All day';
             
-                return `${str}${event.summary} (${formattedTime}) ${event.location}\n`;
-            }, 'Events:\n');
-            
-            text = output;
+            const startTime = event.start.dateTime ? new Date(event.start.dateTime) : null;
+            const formattedTime = startTime ? startTime.toLocaleTimeString() : 'All day';
+            text = `${event.summary} (${formattedTime}) ${event.location}\n`;
             geocodeAddress(event.location,text);
         }
         console.log(`Event: ${event.summary}, Date: ${event.start.dateTime || event.start.date}, Location: ${event.location}`);
@@ -106,11 +105,15 @@ function printEvents() {
 
                         // Perform further actions with latitude and longitude
                         console.log("Found:", building, key2, "Latitude:", latitude, "Longitude:", longitude);
+                        console.log(text);
                         markers.unshift({
                             latitude: latitude,
                             longitude: longitude,
                             text: text
                         });
+                    }
+                    else{
+                        console.log('room not found');
                     }
                 }
             } else {
@@ -192,7 +195,7 @@ function displayMarkersOnMap(map) {
             position: { lat: latitude, lng: longitude },
             map: map,
         });
-
+        console.log(combinedText[coord]);
         var infoWindow = new google.maps.InfoWindow({
             content: combinedText[coord],
         });
